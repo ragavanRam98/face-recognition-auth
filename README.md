@@ -56,74 +56,7 @@ Face-Id/
 └── nginx/                         # Nginx configuration
 ```
 
-## SOLID Principles Implementation
 
-This project follows SOLID principles to ensure maintainable, extensible, and testable code:
-
-### **1. Single Responsibility Principle (SRP)**
-- **Services**: Each service has a single responsibility
-  - `AuthService`: Handles user authentication and registration
-  - `FaceService`: Manages face-related operations
-  - `ErrorHandler`: Centralized error handling
-- **Repositories**: Each repository handles one entity type
-  - `UserRepository`: User data operations
-  - `FaceImageRepository`: Face image data operations
-- **Routes**: Each blueprint handles specific functionality
-  - `auth_bp`: Authentication endpoints
-  - `face_bp`: Face management endpoints
-
-### **2. Open/Closed Principle (OCP)**
-- **Interfaces**: All major components implement interfaces
-  - `IFaceRecognitionService`: Face recognition operations
-  - `IUserRepository`: User data operations
-  - `IFaceImageRepository`: Face image operations
-  - `IInputValidator`: Input validation
-- **Extensible Design**: New implementations can be added without modifying existing code
-
-### **3. Liskov Substitution Principle (LSP)**
-- **Interface Compliance**: All implementations properly implement their interfaces
-- **Consistent Return Types**: All methods return consistent types
-- **Error Handling**: Consistent error handling patterns across implementations
-
-### **4. Interface Segregation Principle (ISP)**
-- **Focused Interfaces**: Each interface has minimal, focused methods
-- **No Fat Interfaces**: Interfaces contain only necessary methods
-- **Client-Specific Interfaces**: Different clients use different interfaces
-
-### **5. Dependency Inversion Principle (DIP)**
-- **Dependency Injection**: Services receive dependencies through constructor injection
-- **Interface Dependencies**: High-level modules depend on abstractions, not concretions
-- **Inversion of Control**: Application factory manages dependencies
-
-## Architecture Benefits
-
-### **Maintainability**
-- Clear separation of concerns
-- Modular design allows easy modifications
-- Consistent error handling patterns
-
-### **Testability**
-- Interface-based design enables easy mocking
-- Dependency injection simplifies unit testing
-- Isolated components can be tested independently
-
-### **Extensibility**
-- New services can be added without changing existing code
-- Repository pattern allows easy database changes
-- Interface-based design supports multiple implementations
-
-### **Scalability**
-- Service layer can be easily distributed
-- Repository pattern supports different data sources
-- Blueprint structure supports microservices
-
-## Key Design Patterns
-
-1. **Repository Pattern**: Abstracts data access layer
-2. **Service Layer Pattern**: Encapsulates business logic
-3. **Factory Pattern**: Application factory for dependency creation
-4. **Dependency Injection**: Services receive dependencies through constructors
-5. **Interface Segregation**: Focused, minimal interfaces
 
 ## Installation and Setup
 
