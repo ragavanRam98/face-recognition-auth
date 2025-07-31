@@ -1,0 +1,427 @@
+<!-- {% if user %}
+<style>pre{white-space:wrap}</style>
+<div>Logged in as <strong>{{user.username}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
+
+{% for client in clients %}
+<strong>Client_name:</strong>{{client.name}}<br>
+<strong>Client_Id:</strong>{{client.client_id}}<br>
+<strong>Client_Secret:</strong>{{client.client_secret}}
+<hr>
+{% endfor %}
+
+<br><a href="{{ url_for('.create_client') }}">Create Client</a>
+
+{% else %}
+<form action="" method="post">
+  <input type="text" name="username" placeholder="username">
+  <input type="text" name="email" placeholder="email">
+  <button type="submit">Login / Signup</button>
+</form>
+{% endif %} -->
+
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/style.css')}}" type="text/css" media="all">
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #E7DAF3
+        }
+        
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .txt {
+            margin-left: 125px;
+            margin-top: 80px;
+        }
+        
+        .txt1 {
+            text-align: center
+        }
+        
+        ;
+    </style>
+
+
+</head>
+
+<body class='main2'>
+    {% if user %}
+    <style>
+        pre {
+            white-space: wrap
+        }
+    </style>
+    <meta id="myUserId" data-id="{{ user.id }}">
+    <div style="text-align: center;">Logged in as <strong>{{user.username}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
+
+
+    {% for client in clients %}
+    <!-- <strong>Client_name:</strong>{{client.name}}<br>
+    <strong>Client_Id:</strong>{{client.client_id}}<br>
+    <strong>Client_Secret:</strong>{{client.client_secret}} -->
+
+
+
+
+    <div class="txt">
+        <table>
+            <col width="350" style="text-align: center;">
+            <col width="350" style="text-align: center;">
+            <col width="400" style="text-align: center;">
+            <col width="200" style="text-align: center;">
+            <tr>
+
+                <th> APPLICATION NAME </th>
+                <th> APPLICATION URL </th>
+                <th> CLIENT ID </th>
+                <th> CLIENT Secret Key </th>
+            </tr>
+
+            <tr>
+                <td>{{client.name}}</td>
+                <td>{{client.client_uri}}</td>
+                <td>{{client.client_id}}</td>
+                <td>{{client.client_secret}}</td>
+            </tr>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <hr> {% endfor %}
+
+
+
+    <br><a href="{{ url_for('.create_client') }}" class="btn">Create Client</a> {% if face %}
+    <div class="wthree-field">
+
+        <div style="text-align: center;"><strong>Chill !! Face-Id Remembers your Face</strong</div>
+
+    </div>
+
+
+    {% else %}
+
+    <div>
+        <meta id="myEmailData" data-email="{{ user.email_id }}">
+        <div class="contentarea">
+            <div class="camera">
+                <video id="video" style="width:300px;height: 300px;position:absolute;left:30%;top:50%;max-resolution: left -150px;margin-top: -150px;">Video stream not available.</video>
+
+            </div>
+
+            <button class="btn" id="startbutton" style="position: absolute;
+            left: 45%;
+            top: 50%;
+            margin-left: -150px;
+            margin-top: -150px;">Register My Face</button>
+
+            <div>
+                <canvas id="canvas">
+    </canvas></div>
+            <!-- <div class="output">
+                <img id="photo" alt="The screen capture will appear in this box.">
+            </div> -->
+        </div>
+
+        <div>
+
+
+            <script>
+                (function() {
+                    // The width and height of the captured photo. We will set the
+                    // width to the value defined here, but the height will be
+                    // calculated based on the aspect ratio of the input stream.
+
+                    var width = 320; // We will scale the photo width to this
+                    var height = 0; // This will be computed based on the input stream
+
+                    // |streaming| indicates whether or not we're currently streaming
+                    // video from the camera. Obviously, we start at false.
+
+                    var streaming = false;
+                    let value1, value2, value3, value4, value5;
+
+                    // The various HTML elements we need to configure or control. These
+                    // will be set by the startup() function.
+
+                    var video = null;
+                    var canvas = null;
+                    var photo = null;
+                    var startbutton = null;
+
+                    function startup() {
+                        video = document.getElementById('video');
+                        canvas = document.getElementById('canvas');
+                        photo = document.getElementById('photo');
+                        startbutton = document.getElementById('startbutton');
+
+                        navigator.mediaDevices.getUserMedia({
+                                video: true,
+                                audio: false
+                            })
+                            .then(function(stream) {
+                                video.srcObject = stream;
+                                video.play();
+                            })
+                            .catch(function(err) {
+                                console.log("An error occurred: " + err);
+                            });
+
+                        video.addEventListener('canplay', function(ev) {
+                            if (!streaming) {
+                                height = video.videoHeight / (video.videoWidth / width);
+
+                                // Firefox currently has a bug where the height can't be read from
+                                // the video, so we will make assumptions if this happens.
+
+                                if (isNaN(height)) {
+                                    height = width / (4 / 3);
+                                }
+
+                                video.setAttribute('width', width);
+                                video.setAttribute('height', height);
+                                canvas.setAttribute('width', width);
+                                canvas.setAttribute('height', height);
+                                streaming = true;
+                            }
+                        }, false);
+
+                        startbutton.addEventListener('click', function(ev) {
+                            takepicture();
+                            ev.preventDefault();
+                        }, false);
+
+                        clearphoto();
+                    }
+
+                    // Fill the photo with an indication that none has been
+                    // captured.
+
+                    function clearphoto() {
+                        var context = canvas.getContext('2d');
+                        context.fillStyle = "#AAA";
+                        context.fillRect(0, 0, canvas.width, canvas.height);
+
+                        var data = canvas.toDataURL('image/png');
+                        //photo.setAttribute('src', data);
+                    }
+
+                    // Capture a photo by fetching the current contents of the video
+                    // and drawing it into a canvas, then converting that to a PNG
+                    // format data URL. By drawing it on an offscreen canvas and then
+                    // drawing that to the screen, we can change its size and/or apply
+                    // other changes before drawing it.
+                    function sleepy(milliseconds) {
+                        let timeStart = new Date().getTime();
+                        while (true) {
+                            let elapsedTime = new Date().getTime() - timeStart;
+                            if (elapsedTime > milliseconds) {
+                                break;
+                            }
+                        }
+                    }
+
+                    function assignMethod() {
+                        var context = canvas.getContext('2d');
+                        value1 = canvas.toDataURL();
+                        console.log(value1)
+                        sleepy(500);
+                        context.drawImage(video, 0, 0, width, height);
+                        value2 = canvas.toDataURL();
+                        console.log(value2)
+                        sleepy(500);
+                        context.drawImage(video, 0, 0, width, height);
+                        value3 = canvas.toDataURL();
+                        console.log(value3)
+                        sleepy(500);
+                        context.drawImage(video, 0, 0, width, height);
+                        value4 = canvas.toDataURL();
+                        console.log(value4)
+                        sleepy(500);
+                        context.drawImage(video, 0, 0, width, height);
+                        value5 = canvas.toDataURL();
+                        console.log(value5)
+                        sleepy(500);
+
+                    }
+
+                    function callServer() {
+
+                        var id = $('#myUserId').data("id");
+
+                        fetch("http://localhost:5000/updatePhoto", {
+
+                            // Adding method type 
+                            method: "POST",
+
+                            // Adding body or contents to send 
+                            body: JSON.stringify({
+
+                                userId: id,
+                                value1: value1,
+                                value2: value2,
+                                value3: value3,
+                                value4: value4,
+                                value5: value5
+                            }),
+
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+
+                        }).then(response => {
+                            if (response.redirected) {
+                                console.log(response.url);
+                                window.location.href = response.url;
+                            }
+                        }).catch(error => {
+                            console.log(error + "url: " + url);
+                        })
+                    }
+
+
+                    function takepicture() {
+                        var context = canvas.getContext('2d');
+                        if (width && height) {
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            context.drawImage(video, 0, 0, width, height);
+                            assignMethod();
+                            callServer();
+                            var data = canvas.toDataURL('image/png');
+                            photo.setAttribute('src', data);
+
+
+
+                        } else {
+                            clearphoto();
+                        }
+                    }
+
+                    // Set up our event listener to run the startup process
+                    // once loading is complete.
+                    window.addEventListener('load', startup, false);
+                })();
+            </script>
+
+
+
+
+
+        </div>
+
+
+
+    </div>
+    {% endif %} {% else %}
+
+    
+    
+    <!-- <form action="" method="post">
+        <input type="text" name="username" placeholder="username" required>
+        <input type="password" name="password" placeholder="password" required>
+        <button type="submit">Login</button> {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }} {% endif %}
+            </form> -->
+            <div class='layer'>
+                <div class='bottom-grid'>
+                    <div class='col'>
+                        <h1> FACE ID </h1>
+                    </div>
+
+                    <div class="links">
+                        <ul class="links-unordered-list">
+
+                            <li class="active">
+                                <a href="{{ url_for('.serverSignUp') }}" class="">Register</a>
+                            </li>
+                            <li class="">
+                                <a href="#" class="" style="color:black;">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-w3ls">
+                    <div class="content-bottom">
+                        <form action="" method="post">
+                            <div class="field-group">
+
+                                <div class="wthree-field">
+                                    <input type="text" placeholder="Username" name="username" value="{{
+                    request.form.username }}" required>
+                                </div>
+                            </div>
+
+                            <div class="field-group">
+
+                                <div class="wthree-field">
+                                    <input name="password" id="pass" type="Password" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="wthree-field">
+                                <button type="submit" class="btn">Login</button>
+                            </div>
+                        </form>
+                        {% if error %}
+                        <div class="wthree-field">
+
+                            <p class="error"><strong>Error:</strong> {{ error }}
+                        </div>
+                        {% endif %}
+
+
+
+                    </div>
+                </div>
+                <div class="bottom-grid1">
+                    <div class="links">
+                        <ul class="links-unordered-list1">
+                            <li class="">
+                                <a href="about_us.html" class=""><b>About Us</b></a>
+                            </li>
+                            <li class="">
+                                <a href="privacy.html" class=""><b>Privacy Policy</b></a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+            {% endif %}
+
+
+
+
+
+
+
+</body>
+
+</html>

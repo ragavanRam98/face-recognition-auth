@@ -1,0 +1,252 @@
+# Face Recognition Authentication System
+
+A face recognition authentication system built with Flask, featuring OAuth2 integration and security measures.
+
+## Features
+
+- User registration and authentication
+- Face recognition using dlib and face_recognition library
+- OAuth2 provider implementation
+- RESTful API endpoints
+- Security headers and rate limiting
+- Docker containerization
+- Nginx reverse proxy
+- Logging and monitoring
+
+## Project Structure
+
+```
+Face-Id/
+├── app.py                          # Application factory
+├── models.py                       # Database models
+├── config.py                       # Configuration management
+├── run.py                          # Application entry point
+├── requirements.txt                # Python dependencies
+├── Dockerfile                      # Docker configuration
+├── docker-compose.yml             # Docker Compose setup
+├── deploy.sh                      # Deployment script
+├── .gitignore                     # Git ignore rules
+├── env.example                    # Environment variables template
+├── interfaces/                     # SOLID interfaces
+│   ├── __init__.py
+│   ├── face_recognition.py        # Face recognition interface
+│   ├── repositories.py            # Repository interfaces
+│   └── validators.py              # Validator interface
+├── repositories/                   # Repository implementations
+│   ├── __init__.py
+│   ├── user_repository.py         # User repository
+│   └── face_image_repository.py   # Face image repository
+├── services/                       # Business logic services
+│   ├── __init__.py
+│   ├── face_recognition_service.py # Face recognition service
+│   ├── auth_service.py            # Authentication service
+│   ├── face_service.py            # Face management service
+│   └── error_handler.py           # Error handling service
+├── routes/                        # API route blueprints
+│   ├── __init__.py
+│   ├── auth.py                    # Authentication routes
+│   ├── face.py                    # Face management routes
+│   ├── oauth.py                   # OAuth2 routes
+│   └── api.py                     # General API routes
+├── utils/                         # Utility functions
+│   ├── __init__.py
+│   └── validators.py              # Input validation
+├── templates/                      # HTML templates
+├── static/                        # Static files
+└── nginx/                         # Nginx configuration
+```
+
+## SOLID Principles Implementation
+
+This project follows SOLID principles to ensure maintainable, extensible, and testable code:
+
+### **1. Single Responsibility Principle (SRP)**
+- **Services**: Each service has a single responsibility
+  - `AuthService`: Handles user authentication and registration
+  - `FaceService`: Manages face-related operations
+  - `ErrorHandler`: Centralized error handling
+- **Repositories**: Each repository handles one entity type
+  - `UserRepository`: User data operations
+  - `FaceImageRepository`: Face image data operations
+- **Routes**: Each blueprint handles specific functionality
+  - `auth_bp`: Authentication endpoints
+  - `face_bp`: Face management endpoints
+
+### **2. Open/Closed Principle (OCP)**
+- **Interfaces**: All major components implement interfaces
+  - `IFaceRecognitionService`: Face recognition operations
+  - `IUserRepository`: User data operations
+  - `IFaceImageRepository`: Face image operations
+  - `IInputValidator`: Input validation
+- **Extensible Design**: New implementations can be added without modifying existing code
+
+### **3. Liskov Substitution Principle (LSP)**
+- **Interface Compliance**: All implementations properly implement their interfaces
+- **Consistent Return Types**: All methods return consistent types
+- **Error Handling**: Consistent error handling patterns across implementations
+
+### **4. Interface Segregation Principle (ISP)**
+- **Focused Interfaces**: Each interface has minimal, focused methods
+- **No Fat Interfaces**: Interfaces contain only necessary methods
+- **Client-Specific Interfaces**: Different clients use different interfaces
+
+### **5. Dependency Inversion Principle (DIP)**
+- **Dependency Injection**: Services receive dependencies through constructor injection
+- **Interface Dependencies**: High-level modules depend on abstractions, not concretions
+- **Inversion of Control**: Application factory manages dependencies
+
+## Architecture Benefits
+
+### **Maintainability**
+- Clear separation of concerns
+- Modular design allows easy modifications
+- Consistent error handling patterns
+
+### **Testability**
+- Interface-based design enables easy mocking
+- Dependency injection simplifies unit testing
+- Isolated components can be tested independently
+
+### **Extensibility**
+- New services can be added without changing existing code
+- Repository pattern allows easy database changes
+- Interface-based design supports multiple implementations
+
+### **Scalability**
+- Service layer can be easily distributed
+- Repository pattern supports different data sources
+- Blueprint structure supports microservices
+
+## Key Design Patterns
+
+1. **Repository Pattern**: Abstracts data access layer
+2. **Service Layer Pattern**: Encapsulates business logic
+3. **Factory Pattern**: Application factory for dependency creation
+4. **Dependency Injection**: Services receive dependencies through constructors
+5. **Interface Segregation**: Focused, minimal interfaces
+
+## Installation and Setup
+
+### Prerequisites
+
+- Python 3.8+
+- Docker and Docker Compose (for containerized deployment)
+- Git
+
+### Local Development
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd Face-Id
+   ```
+
+2. **Create virtual environment**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables**:
+   ```bash
+   cp env.example .env
+   # Edit .env with your configuration
+   ```
+
+5. **Initialize database**:
+   ```bash
+   python run.py
+   ```
+
+6. **Run the application**:
+   ```bash
+   python run.py
+   ```
+
+### Docker Deployment
+
+1. **Build and run with Docker Compose**:
+   ```bash
+   docker-compose up --build
+   ```
+
+2. **Or use the deployment script**:
+   ```bash
+   chmod +x deploy.sh
+   ./deploy.sh
+   ```
+
+## API Endpoints
+
+### Authentication
+- `POST /auth/register` - User registration
+- `POST /auth/login` - User login
+- `GET /auth/logout` - User logout
+- `GET /auth/profile` - Get user profile
+- `PUT /auth/profile` - Update user profile
+
+### Face Management
+- `POST /face/register` - Register face images
+- `POST /face/recognize` - Recognize face
+- `GET /face/images` - Get user face images
+- `DELETE /face/images/<id>` - Delete face image
+- `POST /face/update` - Update face images
+
+### OAuth2
+- `GET /oauth/authorize` - Authorization endpoint
+- `POST /oauth/token` - Token endpoint
+- `GET /oauth/revoke` - Token revocation
+
+### General
+- `GET /health` - Health check endpoint
+
+## Configuration
+
+Key configuration options in `config.py`:
+
+- `SECRET_KEY`: Application secret key
+- `DATABASE_URL`: Database connection string
+- `FACES_DIR`: Directory for face images
+- `FACE_RECOGNITION_TOLERANCE`: Face recognition tolerance
+- `MAX_IMAGES_PER_USER`: Maximum face images per user
+- `RATE_LIMIT`: Rate limiting configuration
+
+## Security Features
+
+- Password hashing with bcrypt
+- CSRF protection
+- Security headers (HSTS, CSP, XSS Protection)
+- Rate limiting
+- Input validation and sanitization
+- OAuth2 implementation
+
+## Logging
+
+The application uses structured logging with:
+- File rotation
+- Different log levels for development/production
+- Error tracking and monitoring
+
+## Monitoring
+
+- Health check endpoint (`/health`)
+- Database connection monitoring
+- Service status monitoring
+- Cache statistics
+
+## Contributing
+
+1. Follow SOLID principles
+2. Add proper type hints and docstrings
+3. Write unit tests for new functionality
+4. Update documentation
+5. Follow the existing code style
+
+## License
+
+This project is licensed under the MIT License. 

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Allow</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/util.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='fonts/Linearicons-Free-v1.0.0/icon-font.min.css') }}">
+    <!-- <link rel="stylesheet" type="text/css" href="./fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./fonts/Linearicons-Free-v1.0.0/icon-font.min.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="./css/util.css">
+    <link rel="stylesheet" type="text/css" href="./css/main.css"> -->
+
+</head>
+
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100 p-t-30 p-b-50">
+
+                <form action='' method="post" class="login100-form validate-form p-b-33 p-t-5">
+                    <div class="container-login100-form-btn m-t-30">
+                        <img src="{{ url_for('static',filename='images/logo.jpg') }}" style='width:75px;height:75px;' />
+                    </div>
+                    <meta id="my-name" data-name="{{email}}">
+                    <span class="login100-form-title p-b-30 p-t-30 " style='color:green; font-size:24px;'>
+					Welcome thangapandi !
+				</span>
+                    <span>
+					<h4 style='margin-left:20px;'> Demo App wants to access your information..</h4><br>
+					<h4 style='margin-left:70px;'> * E-mail Address</h4>
+				</span>
+                    <div class="container-login100-form-btn m-t-30">
+                        <button id="snap" class="login100-form-btn" name="confirm" value="yes">
+							Allow
+						</button>
+                        <button class="login100-form-btn m-l-15" name="confirm" value="no">
+							Cancel
+						</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const allow = document.getElementById('allow');
+        if (allow) {
+            allow.addEventListener('click', function(e) {
+
+                var name = $('#my-name').data();
+                console.log(name)
+                fetch("http://localhost:8091/recognise_image", {
+
+                        // Adding method type 
+                        method: "POST",
+
+                        // Adding body or contents to send 
+                        body: JSON.stringify({
+                            name: name,
+                        }),
+
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
+                    }).then(response => {
+                        console.log("response data " + response)
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    }).catch(error => {
+                        console.log(error + "url: " + url);
+                    })
+                    .then(json => console.log(json));
+            })
+        }
+    </script>
+
+
+</body>
+
+</html>

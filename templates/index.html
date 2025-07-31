@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Demo Application </title>
+
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/style3.css')}}" type="text/css" media="all">
+
+
+</head>
+
+<body>
+
+    <section class=''>
+        <div class='layer'>
+            <div class='bottom-grid'>
+                <div class='col'>
+                    <h2> Demo App</h2>
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <div class="col s12 m6 offset-m3 center-align">
+                <a class="oauth-container btn darken-4 white black-text" href="/users/google-oauth/" style="text-transform:none">
+                    <div class="left">
+                        <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in" src="https://th.bing.com/th/id/OIP.D1N8_EpHqreq6CAwk60vLAHaHa?pid=Api&rs=1" />
+                    </div>
+                    Login with Facebook
+                </a>
+            </div>
+
+
+
+            </br>
+            </br>
+
+
+
+            <div class="col s12 m6 offset-m3 center-align">
+                <a class="oauth-container btn darken-4 white black-text" href="/users/google-oauth/" style="text-transform:none">
+                    <div class="left">
+                        <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                    </div>
+                    Login with Google
+                </a>
+            </div>
+
+            <!-- Compiled and minified CSS -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+            <!-- Compiled and minified JavaScript -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+
+            </br>
+            </br>
+
+            <div class="col s12 m6 offset-m3 center-align">
+                <a class="oauth-container btn darken-4 white black-text" href="/" style="text-transform:none">
+                    <div class="left">
+                        <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in" src="{{url_for('static',filename='images/logo.jpg')}}" />
+                    </div>
+                    Login with FaceId
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+
+</html>

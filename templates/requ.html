@@ -1,0 +1,217 @@
+ {% if user %}
+<style>
+    pre {
+        white-space: wrap
+    }
+</style>
+<div>Logged in as <strong>{{user}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
+
+{% for client in clients %}
+<pre>
+<strong>Client Info</strong>
+  {%- for key in client.client_info %}
+  <strong>{{ key }}: </strong>{{ client.client_info[key] }}
+  {%- endfor %}
+<strong>Client Metadata</strong>
+  {%- for key in client.client_metadata %}
+  <strong>{{ key }}: </strong>{{ client.client_metadata[key] }}
+  {%- endfor %}
+</pre>
+<hr> {% endfor %}
+
+<br><a href="{{ url_for('.create_client') }}">Create Client</a> {% else %}
+<!-- <form action="" method="post">
+    <input type="text" name="username" placeholder="username">
+    <label>Testing</label>
+    <button type="submit">Login / Signup</button>
+</form> -->
+<form id="myForm" action="" method="post">
+
+    <input type="hidden" id="encodedInputValue" name="encodedInputValue" />
+
+    <!-- <button type="submit">Login</button> -->
+</form>
+
+
+<div class='main2'>
+    <!-- <meta id="myEmailData" data-email="{{ user.email_id }}"> -->
+    <div>
+        <meta id="myEmailData" data-email="{{ user.email_id }}">
+        <div class="contentarea">
+            <div class="camera">
+                <video id="video" style="width:300px;height: 300px;position:absolute;left:30%;top:50%;max-resolution: left -150px;margin-top: -150px;">Video stream not available.</video>
+
+            </div>
+
+            <button class="btn" id="startbutton" style="position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -150px;
+            margin-top: -150px;">Login</button>
+
+            <div>
+                <canvas id="canvas">
+                 </canvas></div>
+            <!-- <div class="output">
+                <img id="photo" alt="The screen capture will appear in this box.">
+            </div> -->
+        </div>
+        <link rel="stylesheet" href="{{url_for('static',filename='styles/style.css')}}" type="text/css" media="all">
+    </div>
+    <div>
+        <script>
+            (function() {
+
+                var width = 320;
+                var height = 0;
+
+
+                var streaming = false;
+                let value1, value2, value3, value4, value5;
+
+
+                var video = null;
+                var canvas = null;
+                var photo = null;
+                var startbutton = null;
+                var encValueField = null;
+
+                function startup() {
+
+                    video = document.getElementById('video');
+                    canvas = document.getElementById('canvas');
+                    photo = document.getElementById('photo');
+                    startbutton = document.getElementById('startbutton');
+
+                    navigator.mediaDevices.getUserMedia({
+                            video: true,
+                            audio: false
+                        })
+                        .then(function(stream) {
+                            video.srcObject = stream;
+                            video.play();
+                        })
+                        .catch(function(err) {
+                            console.log("An error occurred: " + err);
+                        });
+
+                    video.addEventListener('canplay', function(ev) {
+                        if (!streaming) {
+                            height = video.videoHeight / (video.videoWidth / width);
+
+
+
+                            if (isNaN(height)) {
+                                height = width / (4 / 3);
+                            }
+
+                            video.setAttribute('width', width);
+                            video.setAttribute('height', height);
+                            canvas.setAttribute('width', width);
+                            canvas.setAttribute('height', height);
+                            streaming = true;
+                        }
+                    }, false);
+
+                    startbutton.addEventListener('click', function(ev) {
+
+                        takepicture();
+                        ev.preventDefault();
+                    }, false);
+
+                    clearphoto();
+                }
+
+
+
+                function clearphoto() {
+                    var context = canvas.getContext('2d');
+                    context.fillStyle = "#AAA";
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+
+                    var data = canvas.toDataURL('image/png');
+                    photo.setAttribute('src', data);
+                }
+
+
+                function sleepy(milliseconds) {
+                    let timeStart = new Date().getTime();
+                    while (true) {
+                        let elapsedTime = new Date().getTime() - timeStart;
+                        if (elapsedTime > milliseconds) {
+                            break;
+                        }
+                    }
+                }
+
+                function assignMethod() {
+                    var context = canvas.getContext('2d');
+                    value1 = canvas.toDataURL();
+                    console.log(value1);
+                    document.getElementById('encodedInputValue').value = value1;
+                    document.getElementById('myForm').submit();
+
+
+                }
+
+                // function callServer() {
+
+
+
+                //     fetch("http://localhost:5000/requ", {
+
+
+                //         method: "POST",
+
+
+                //         body: JSON.stringify({
+                //             value1: value1
+                //         }),
+
+                //         headers: {
+                //             "Content-type": "application/json; charset=UTF-8",
+                //             // "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                //         }
+
+                //     }).then(response => {
+                //         if (response.redirected) {
+                //             console.log(response.url);
+                //             window.location.href = response.url;
+                //         }
+                //     }).catch(error => {
+                //         console.log(error + "url: " + url);
+                //     })
+                // }
+
+
+                function takepicture() {
+                    var context = canvas.getContext('2d');
+                    if (width && height) {
+                        //encValue = document.getElementById('encValue')
+                        canvas.width = width;
+                        canvas.height = height;
+                        context.drawImage(video, 0, 0, width, height);
+                        assignMethod();
+                        //encValue.innerHTML = canvas.toDataURL();
+                        // callServer();
+                        var data = canvas.toDataURL('image/png');
+                        photo.setAttribute('src', data);
+
+
+
+                    } else {
+                        clearphoto();
+                    }
+                }
+
+                // Set up our event listener to run the startup process
+                // once loading is complete.
+                window.addEventListener('load', startup, false);
+            })();
+        </script>
+    </div>
+
+
+
+
+    {% endif %}

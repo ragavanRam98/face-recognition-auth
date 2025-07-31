@@ -1,0 +1,121 @@
+<!-- <html>
+
+<head>
+    <title>Flask Intro - login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Sign Up</h1>
+        <br>
+        <form action="" method="post">
+            <input type="text" placeholder="Username" name="username" value="{{
+          request.form.username }}">
+            <input type="text" placeholder="Email" name="email_id" value="{{
+            request.form.email_id }}">
+            <input type="password" placeholder="Password" name="password" value="{{
+          request.form.password }}">
+            <input class="btn btn-default" type="submit" value="Sign Up">
+        </form>
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }} {% endif %}
+    </div>
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> FACE ID REGISTRATION_DEVELOPER </title>
+
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/style.css')}}" type="text/css" media="all">
+
+
+</head>
+
+<body>
+
+    <section class='main2'>
+        <div class='layer'>
+            <div class='bottom-grid'>
+                <div class='col'>
+                    <h1> FACE ID </h1>
+                </div>
+
+                <div class="links">
+                    <ul class="links-unordered-list">
+                        <li class=''>
+                            <a href="/" class="" style="color:black;">Login</a>
+                        </li>
+                        <li class="active">
+                            <a href="#" class="">Register</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="" style="color:black;">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-w3ls">
+                <div class="content-bottom">
+                    <form action="" method="post">
+                        <div class="field-group">
+
+                            <div class="wthree-field">
+                                <input type="text" placeholder="Username" name="username" value="{{
+                request.form.username }}" required>
+                            </div>
+                        </div>
+                        <div class="field-group">
+
+                            <div class="wthree-field">
+                                <input type="text" placeholder="Email" name="email_id" value="{{
+                request.form.email_id }}" required>
+                            </div>
+                        </div>
+                        <div class="field-group">
+
+                            <div class="wthree-field">
+                                <input type="password" placeholder="Password" name="password" value="{{
+                request.form.password }}" required>
+                            </div>
+                        </div>
+                        <div class="wthree-field">
+                            <button type="submit" class="btn">REGISTER</button>
+                        </div>
+                        {% if error %}
+                        <div class="wthree-field">
+
+                            <p class="error"><strong>Error:</strong> {{ error }}
+                        </div>
+                        {% endif %}
+                    </form>
+
+                </div>
+            </div>
+            <div class="bottom-grid1">
+                <div class="links">
+                    <ul class="links-unordered-list1">
+                        <li class="">
+                            <a href="about_us.html" class=""><b>About Us</b></a>
+                        </li>
+                        <li class="">
+                            <a href="privacy.html" class=""><b>Privacy Policy</b></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</body>
+
+</html>

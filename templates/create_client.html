@@ -1,0 +1,70 @@
+<head>
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/style.css')}}" type="text/css" media="all">
+</head>
+
+<body class='main2'>
+    <div class='layer'>
+        <div class='bottom-grid'>
+            <div class='col'>
+                <h1> Generate API Key </h1>
+            </div>
+
+            <div class="links">
+                <ul class="links-unordered-list">
+
+                    <li class="active">
+                        <a href="/" class="" style="color:black;">Home</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="" style="color:black;">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-w3ls">
+            <div class="content-bottom">
+                <form action="" method="post">
+                    <div class="field-group">
+
+                        <div class="wthree-field">
+                            <input type="text" placeholder="Client Name" name="client_name" required>
+                        </div>
+                    </div>
+                    <div class="field-group">
+
+                        <div class="wthree-field">
+                            <input type="text" placeholder="Client Uri" name="client_uri" required>
+                        </div>
+                    </div>
+
+
+                    <div class="wthree-field">
+                        <button type="submit" class="btn">Generate</button>
+                    </div>
+                </form>
+                {% if error %}
+                <div class="wthree-field">
+
+                    <p class="error"><strong>Error:</strong> {{ error }}
+                </div>
+                {% endif %}
+
+
+
+            </div>
+        </div>
+        <div class="bottom-grid1">
+            <div class="links">
+                <ul class="links-unordered-list1">
+                    <li class="">
+                        <a href="about_us.html" class=""><b>About Us</b></a>
+                    </li>
+                    <li class="">
+                        <a href="privacy.html" class=""><b>Privacy Policy</b></a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>

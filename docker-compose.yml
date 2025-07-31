@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  faceid-app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - DATABASE_URL=sqlite:///faceid.db
+      - FACES_DIR=./faces
+      - MAX_IMAGES_PER_USER=5
+      - FACE_RECOGNITION_TOLERANCE=0.6
+      - REDIS_URL=redis://redis:6379/0
+      - OAUTHLIB_INSECURE_TRANSPORT=false
+      - SESSION_COOKIE_SECURE=true
+      - SESSION_COOKIE_HTTPONLY=true
+      - SESSION_COOKIE_SAMESITE=Lax
+      - PREFERRED_URL_SCHEME=https
+    volumes:
+      - ./faces:/app/faces
+      - ./logs:/app/logs
+      - faceid-data:/app/data
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - faceid-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - faceid-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - faceid-app
+    restart: unless-stopped
+    networks:
+      - faceid-network
+
+volumes:
+  faceid-data:
+  redis-data:
+
+networks:
+  faceid-network:
+    driver: bridge 
